@@ -67,7 +67,7 @@ const team_2 = JSON.parse(document.getElementById("team2").textContent)
 document.title = team_1 + " vs " + team_2;
 //web socket connection
 
-ws = new WebSocket('ws://127.0.0.1:8000/liveHost/'+match_id+'/');
+ws = new WebSocket("ws://"+window.location.host+"/liveHost/"+match_id+"/");
 
 
 let old_batsman_score;
@@ -88,7 +88,6 @@ const send_message = function(start){
     'wide_ball':wide_ball,
     'extra':extra,
     'byes':byes,
-    'over_throw':over_throw,
     'noball':noball,
     'batsman1':batsman1,
     'batsman2':batsman2,
@@ -223,6 +222,7 @@ document.getElementById("dec_ball_1").onclick = function(){
 
 document.getElementById("dec_wicket_1").onclick = function(){
   current_wicket=-1;
+  add_ball=-1;
   send_message()
 }
 let list = document.querySelectorAll(".add-runs");
@@ -248,9 +248,16 @@ for(let i=0;i<7;i++)
 // Handling end match button
 
 document.getElementById("endmatch").onclick=function(){
-  console.log("ENDING")
+  if(confirm("Do you really want to abort the?")){
+
   end_match=1;
-  send_message()
+  send_message();
+  window.location.reload();
+  window.location.href="http://127.0.0.1:8000/"+document.getElementById("endmatch").value+"/"
+  }
+  else{
+    console.log("clicked on cancel");
+  }
 }
 
 //Handling wicket out button
@@ -355,22 +362,6 @@ document.getElementById("wide").onclick = function()
 
 //Handling over throw button
 
-document.getElementById("overthrow").onclick = function()
-{
-  let fag=1;
-  over_throw = 1;
-  for(let element of entry_zero)
-    {
-     element.addEventListener("click",()=>{
-      while(fag!=0){
-      extra = element.innerHTML;
-      score=extra;
-      send_message(0);
-      fag=0;
-      }
-     })
-    }
-}
 
 // Making changes on receiving message
 
@@ -382,7 +373,6 @@ ws.onmessage = function(event){
   run_out_b1 = 0;
   run_out_b2 = 0;
   noball=0;
-  over_throw =0;
   wide_ball =0;
   byes=0;
   extra=0;
@@ -397,6 +387,10 @@ ws.onmessage = function(event){
   console.log(event.data);
   current_data = JSON.parse(event.data);
   console.log(current_data.current_score);
+  if(current_data.match_completed==1)
+    {
+      window.location.href="http://127.0.0.1:8000/match_summary/"+match_id+"/";
+    }
   document.getElementById("total-score").innerHTML=current_data.current_score;//updating total score of bating team
 document.getElementById("bating-team-name").textContent = current_data.bating_team;
 document.getElementById("bowling-team-name").textContent = current_data.bowling_team;
@@ -466,4 +460,4 @@ for(let i=0;i<op.length;i++)
         }
     }
 }
-console.log("Iam at the end");
+
