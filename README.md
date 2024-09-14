@@ -1,6 +1,6 @@
 # HowzThat - Celebrating Local Cricket Heroes 
 ## Description
-HowzThat provides a user-friendly web application that enables **real-time tracking of live cricket scores** for local matches and players to showcase their skills and achievements. It provides a intuitive interface to host live cricket matches. It provides cricket enthusiasts with easy access to information about matches and player statistics.
+HowzThat provides a user-friendly web application that enables **real-time tracking of live cricket scores** for local matches and players to showcase their skills and achievements built using Django. It provides a intuitive interface to host live cricket matches. It provides cricket enthusiasts with easy access to information about matches and player statistics.
 
 ## Features 
 - Live score updates: Real-time updates of scores for ongoing matches using web sockets. **Providing a smooth user experience and reducing the server load without the hassle of page reloads using consistent web socket connection**.
